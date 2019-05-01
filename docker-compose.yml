@@ -1,0 +1,23 @@
+# La version de compose, no se bien en que cambia
+version: "3"
+# Aca vamos a poner los servicios que queramos iniciar desde docker
+services:
+  # Esta es la app en si (el server express)
+  app:
+    container_name: docker-node-mongo
+    restart: always
+    # Buildea la image desde el Dockerfile que ya creamos
+    build: .
+    ports:
+      # puertoEnNuestraPc:puertoEnElQueCorreLaApp
+      - "80:3000"
+    # Conectamos los dos servicios
+    links:
+      - mongo
+  # En el index.js de la app nos conectamos al container para que funcione mongo
+  mongo:
+    container_name: mongo
+    # Aca no construimos una imagen desde Dockerfile como en el anterior, sino que traemos la imagen desde Docker Hub
+    image: mongo
+    ports:
+      - "27017:27017"
